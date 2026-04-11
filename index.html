@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vikasana Systems — Coming Soon</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --bg:#000;
+  --text:#d0d0d0;
+  --dim:#606060;
+}
+
+/* BODY */
+body {
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Barlow', sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+  overflow:hidden;
+  cursor:none;
+}
+
+/* GRID (FIXED + VISIBLE) */
+.grid-bg {
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size:50px 50px;
+  animation: moveGrid 25s linear infinite;
+  z-index:-1;
+}
+
+@keyframes moveGrid {
+  from { background-position:0 0, 0 0; }
+  to { background-position:50px 50px, 50px 50px; }
+}
+
+/* CONTENT */
+.container {
+  text-align:center;
+  max-width:900px;
+  padding:40px;
+}
+
+.tag {
+  font-family:'Share Tech Mono';
+  font-size:11px;
+  letter-spacing:0.18em;
+  color:var(--dim);
+  margin-bottom:20px;
+}
+
+h1 {
+  font-family:'Barlow Condensed';
+  font-weight:800;
+  font-size:clamp(60px, 8vw, 100px);
+  line-height:0.9;
+  text-transform:uppercase;
+  color:#fff;
+}
+
+h1 span { color:rgba(255,255,255,0.25); }
+
+.teaser {
+  margin-top:30px;
+  font-size:16px;
+  line-height:1.7;
+  color:var(--dim);
+}
+
+.highlight { color:#fff; }
+
+.launch {
+  margin-top:40px;
+  font-family:'Share Tech Mono';
+  font-size:12px;
+  letter-spacing:0.2em;
+  color:var(--dim);
+}
+
+/* COUNTDOWN */
+.countdown {
+  margin-top:18px;
+  font-family:'Barlow Condensed';
+  font-weight:700;
+  font-size:42px;
+  color:#fff;
+}
+
+/* CONTACT */
+.contact {
+  margin-top:40px;
+  font-family:'Share Tech Mono';
+  font-size:11px;
+  letter-spacing:0.14em;
+  color:var(--dim);
+}
+
+.contact a {
+  color:#fff;
+  text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,0.3);
+}
+
+/* RETICLE (+ ONLY) */
+.reticle {
+  position:fixed;
+  width:20px;
+  height:20px;
+  pointer-events:none;
+  transform:translate(-50%, -50%);
+  z-index:9999;
+}
+
+.reticle::before,
+.reticle::after {
+  content:'';
+  position:absolute;
+  background:#fff;
+}
+
+.reticle::before {
+  width:1px;
+  height:20px;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.reticle::after {
+  height:1px;
+  width:20px;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="grid-bg"></div>
+<div class="reticle"></div>
+
+<div class="container">
+
+  <div class="tag">VIKASANA SYSTEMS</div>
+
+  <h1>
+    Coming<br>
+    <span>Soon</span>
+  </h1>
+
+  <p class="teaser">
+    Engineering next-generation <span class="highlight">military-grade systems</span>.<br>
+    Precision. Control. Dominance.
+  </p>
+
+  <p class="teaser">
+    From advanced targeting solutions to intelligent battlefield systems —<br>
+    <span class="highlight">we build what others can’t.</span>
+  </p>
+
+  <div class="launch">GOING LIVE IN</div>
+
+  <div class="countdown" id="countdown">--</div>
+
+  <div class="contact">
+    CONTACT: <a href="mailto:info@vikasanasystems.tech">info@vikasanasystems.tech</a>
+  </div>
+
+</div>
+
+<script>
+/* RETICLE FOLLOW */
+const r = document.querySelector('.reticle');
+document.addEventListener('mousemove', e => {
+  r.style.left = e.clientX + 'px';
+  r.style.top = e.clientY + 'px';
+});
+
+/* COUNTDOWN */
+const launch = new Date("April 18, 2026 00:00:00").getTime();
+const el = document.getElementById("countdown");
+
+setInterval(() => {
+  const now = new Date().getTime();
+  const d = launch - now;
+
+  if (d < 0) {
+    el.innerHTML = "WE ARE LIVE";
+    return;
+  }
+
+  const days = Math.floor(d / (1000*60*60*24));
+  const hrs = Math.floor((d/(1000*60*60))%24);
+  const min = Math.floor((d/(1000*60))%60);
+  const sec = Math.floor((d/1000)%60);
+
+  el.innerHTML = `${days}D ${hrs}H ${min}M ${sec}S`;
+}, 1000);
+</script>
+
+</body>
+</html>
