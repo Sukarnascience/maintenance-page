@@ -4,212 +4,350 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vikasana Systems — Coming Soon</title>
-
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
-
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-:root {
-  --bg:#000;
-  --text:#d0d0d0;
-  --dim:#606060;
-}
+  :root {
+    --bg: #000000;
+    --bg-panel: #080808;
+    --bg-card: #0d0d0d;
+    --border: rgba(255,255,255,0.1);
+    --border-bright: rgba(255,255,255,0.3);
+    --text: #d0d0d0;
+    --text-dim: #606060;
+    --text-muted: #2a2a2a;
+    --mono: 'Share Tech Mono', monospace;
+    --display: 'Barlow Condensed', sans-serif;
+    --body-font: 'Barlow', sans-serif;
+  }
 
-/* BODY */
-body {
-  background:var(--bg);
-  color:var(--text);
-  font-family:'Barlow', sans-serif;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  height:100vh;
-  overflow:hidden;
-  cursor:none;
-}
+  html { scroll-behavior: smooth; }
 
-/* GRID (FIXED + VISIBLE) */
-.grid-bg {
-  position:absolute;
-  inset:0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
-  background-size:50px 50px;
-  animation: moveGrid 25s linear infinite;
-  z-index:-1;
-}
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body-font);
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: crosshair;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
 
-@keyframes moveGrid {
-  from { background-position:0 0, 0 0; }
-  to { background-position:50px 50px, 50px 50px; }
-}
+  /* scanline overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.1) 2px,
+      rgba(0,0,0,0.1) 4px
+    );
+    pointer-events: none;
+    z-index: 1000;
+  }
 
-/* CONTENT */
-.container {
-  text-align:center;
-  max-width:900px;
-  padding:40px;
-}
+  /* grid bg */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
 
-.tag {
-  font-family:'Share Tech Mono';
-  font-size:11px;
-  letter-spacing:0.18em;
-  color:var(--dim);
-  margin-bottom:20px;
-}
+  /* NAV */
+  nav {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    height: 64px;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
 
-h1 {
-  font-family:'Barlow Condensed';
-  font-weight:800;
-  font-size:clamp(60px, 8vw, 100px);
-  line-height:0.9;
-  text-transform:uppercase;
-  color:#fff;
-}
+  .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+  .nav-brand-text { display: flex; flex-direction: column; line-height: 1; }
 
-h1 span { color:rgba(255,255,255,0.25); }
+  .nav-brand-name {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.08em;
+    color: #fff;
+    text-transform: uppercase;
+  }
 
-.teaser {
-  margin-top:30px;
-  font-size:16px;
-  line-height:1.7;
-  color:var(--dim);
-}
+  .nav-brand-sub {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+    margin-top: 3px;
+  }
 
-.highlight { color:#fff; }
+  .nav-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
 
-.launch {
-  margin-top:40px;
-  font-family:'Share Tech Mono';
-  font-size:12px;
-  letter-spacing:0.2em;
-  color:var(--dim);
-}
+  .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    animation: pulse 1.8s ease-in-out infinite;
+  }
 
-/* COUNTDOWN */
-.countdown {
-  margin-top:18px;
-  font-family:'Barlow Condensed';
-  font-weight:700;
-  font-size:42px;
-  color:#fff;
-}
+  /* MAIN */
+  main {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 48px;
+    text-align: center;
+  }
 
-/* CONTACT */
-.contact {
-  margin-top:40px;
-  font-family:'Share Tech Mono';
-  font-size:11px;
-  letter-spacing:0.14em;
-  color:var(--dim);
-}
+  .tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.2s forwards;
+  }
 
-.contact a {
-  color:#fff;
-  text-decoration:none;
-  border-bottom:1px solid rgba(255,255,255,0.3);
-}
+  .tag::before, .tag::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: rgba(255,255,255,0.2);
+  }
 
-/* RETICLE (+ ONLY) */
-.reticle {
-  position:fixed;
-  width:20px;
-  height:20px;
-  pointer-events:none;
-  transform:translate(-50%, -50%);
-  z-index:9999;
-}
+  .hero-title {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(64px, 10vw, 128px);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.35s forwards;
+  }
 
-.reticle::before,
-.reticle::after {
-  content:'';
-  position:absolute;
-  background:#fff;
-}
+  .hero-title .dim { color: rgba(255,255,255,0.15); }
 
-.reticle::before {
-  width:1px;
-  height:20px;
-  left:50%;
-  transform:translateX(-50%);
-}
+  .hero-sub {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(18px, 2.5vw, 28px);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: rgba(255,255,255,0.35);
+    margin-top: 20px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.5s forwards;
+  }
 
-.reticle::after {
-  height:1px;
-  width:20px;
-  top:50%;
-  transform:translateY(-50%);
-}
+  /* STATUS STRIP */
+  .status-strip {
+    margin-top: 80px;
+    display: flex;
+    gap: 2px;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.65s forwards;
+  }
 
+  .status-item {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 140px;
+  }
+
+  .status-item-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .status-item-val {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.08em;
+  }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+
+  footer a {
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  footer a:hover { color: #fff; }
+
+  .footer-right { display: flex; gap: 28px; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  /* corner decoration */
+  .corner-deco {
+    position: fixed;
+    width: 80px; height: 80px;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .corner-deco.tl { top: 80px; left: 24px; border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+  .corner-deco.tr { top: 80px; right: 24px; border-top: 1px solid var(--border); border-right: 1px solid var(--border); }
+  .corner-deco.bl { bottom: 60px; left: 24px; border-bottom: 1px solid var(--border); border-left: 1px solid var(--border); }
+  .corner-deco.br { bottom: 60px; right: 24px; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    nav { padding: 0 20px; }
+    main { padding: 60px 24px; }
+    footer { padding: 16px 20px; flex-direction: column; gap: 12px; text-align: center; }
+    .footer-right { gap: 16px; }
+    .cd-block { min-width: 70px; padding: 14px 16px; }
+    .cd-num { font-size: 36px; }
+    .cd-sep { font-size: 32px; }
+    .corner-deco { display: none; }
+    .notify-row { flex-direction: column; }
+    .notify-input { border-right: 1px solid var(--border); border-bottom: none; }
+    .status-strip { gap: 2px; }
+    .status-item { min-width: 120px; }
+  }
 </style>
 </head>
-
 <body>
 
 <div class="grid-bg"></div>
-<div class="reticle"></div>
 
-<div class="container">
+<!-- corner decorations -->
+<div class="corner-deco tl"></div>
+<div class="corner-deco tr"></div>
+<div class="corner-deco bl"></div>
+<div class="corner-deco br"></div>
 
-  <div class="tag">VIKASANA SYSTEMS</div>
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="nav-brand-text">
+      <span class="nav-brand-name">Vikasana Systems</span>
+      <span class="nav-brand-sub"></span>
+    </div>
+  </a>
+  <div class="nav-status">
+    <div class="status-dot"></div>
+    System Standby
+  </div>
+</nav>
 
-  <h1>
-    Coming<br>
-    <span>Soon</span>
+<!-- MAIN -->
+<main>
+
+  <div class="tag">Vikasana Systems</div>
+
+  <h1 class="hero-title">
+    Something <span class="dim">New Is</span> Coming.
   </h1>
 
-  <p class="teaser">
-    Engineering next-generation <span class="highlight">military-grade systems</span>.<br>
-    Precision. Control. Dominance.
-  </p>
+  <div class="hero-sub">Preparing for Deployment</div>
 
-  <p class="teaser">
-    From advanced targeting solutions to intelligent battlefield systems —<br>
-    <span class="highlight">we build what others can’t.</span>
-  </p>
-
-  <div class="launch">GOING LIVE IN</div>
-
-  <div class="countdown" id="countdown">--</div>
-
-  <div class="contact">
-    CONTACT: <a href="mailto:info@vikasanasystems.tech">info@vikasanasystems.tech</a>
+  <!-- CONTACT -->
+  <div class="status-strip">
+    <div class="status-item">
+      <div class="status-item-label">Contact</div>
+      <div class="status-item-val">
+        <a href="mailto:info@vikasanasystems.tech" style="color: inherit; text-decoration: none; transition: color 0.2s;"
+           onmouseover="this.style.color='#fff'" onmouseout="this.style.color=''">
+          info@vikasanasystems.tech
+        </a>
+      </div>
+    </div>
   </div>
 
-</div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 Vikasana Systems · All rights reserved</span>
+  <div class="footer-right">
+    <a href="mailto:info@vikasanasystems.tech">Contact</a>
+    <a href="#">Drishtikon GCS</a>
+    <a href="#">About</a>
+  </div>
+</footer>
 
 <script>
-/* RETICLE FOLLOW */
-const r = document.querySelector('.reticle');
-document.addEventListener('mousemove', e => {
-  r.style.left = e.clientX + 'px';
-  r.style.top = e.clientY + 'px';
-});
-
-/* COUNTDOWN */
-const launch = new Date("April 18, 2026 00:00:00").getTime();
-const el = document.getElementById("countdown");
-
-setInterval(() => {
-  const now = new Date().getTime();
-  const d = launch - now;
-
-  if (d < 0) {
-    el.innerHTML = "WE ARE LIVE";
-    return;
-  }
-
-  const days = Math.floor(d / (1000*60*60*24));
-  const hrs = Math.floor((d/(1000*60*60))%24);
-  const min = Math.floor((d/(1000*60))%60);
-  const sec = Math.floor((d/1000)%60);
-
-  el.innerHTML = `${days}D ${hrs}H ${min}M ${sec}S`;
-}, 1000);
 </script>
-
 </body>
 </html>
