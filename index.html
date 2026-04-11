@@ -3,351 +3,229 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vikasana Systems — Coming Soon</title>
+<title>Vikasana Systems</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@800&family=Barlow:wght@300&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 
-  :root {
-    --bg: #000000;
-    --bg-panel: #080808;
-    --bg-card: #0d0d0d;
-    --border: rgba(255,255,255,0.1);
-    --border-bright: rgba(255,255,255,0.3);
-    --text: #d0d0d0;
-    --text-dim: #606060;
-    --text-muted: #2a2a2a;
-    --mono: 'Share Tech Mono', monospace;
-    --display: 'Barlow Condensed', sans-serif;
-    --body-font: 'Barlow', sans-serif;
-  }
+:root{
+  --mono:'Share Tech Mono',monospace;
+  --display:'Barlow Condensed',sans-serif;
+  --body:'Barlow',sans-serif;
+  --dim:rgba(255,255,255,0.08);
+  --mid:rgba(255,255,255,0.18);
+  --text:#585858;
+}
 
-  html { scroll-behavior: smooth; }
+html,body{height:100%;overflow:hidden;}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--body-font);
-    font-weight: 300;
-    overflow-x: hidden;
-    cursor: crosshair;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
+body{
+  background:#000;
+  color:#fff;
+  cursor:crosshair;
+  display:flex;
+  flex-direction:column;
+}
 
-  /* scanline overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.1) 2px,
-      rgba(0,0,0,0.1) 4px
-    );
-    pointer-events: none;
-    z-index: 1000;
-  }
+/* scanlines */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);
+  pointer-events:none;z-index:999;
+}
 
-  /* grid bg */
-  .grid-bg {
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-    z-index: 0;
-  }
+/* grid */
+body::after{
+  content:'';
+  position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.018) 1px,transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;z-index:0;
+}
 
-  /* NAV */
-  nav {
-    position: relative;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 48px;
-    height: 64px;
-    background: rgba(0,0,0,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
+/* TOP BAR */
+.topbar{
+  position:relative;z-index:10;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 36px;height:52px;
+  border-bottom:1px solid var(--dim);
+}
 
-  .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
-  .nav-brand-text { display: flex; flex-direction: column; line-height: 1; }
+.brand{
+  font-family:var(--display);font-weight:800;
+  font-size:15px;letter-spacing:0.1em;
+  color:#fff;text-transform:uppercase;text-decoration:none;
+}
 
-  .nav-brand-name {
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: 18px;
-    letter-spacing: 0.08em;
-    color: #fff;
-    text-transform: uppercase;
-  }
+.top-right{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.16em;color:var(--text);
+  text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+}
 
-  .nav-brand-sub {
-    font-family: var(--mono);
-    font-size: 9px;
-    color: var(--text-dim);
-    letter-spacing: 0.12em;
-    margin-top: 3px;
-  }
+.dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,0.25);animation:blink 2.4s ease-in-out infinite;}
 
-  .nav-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    color: var(--text-dim);
-    text-transform: uppercase;
-  }
+/* MAIN — centered */
+main{
+  flex:1;position:relative;z-index:5;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:0 24px;text-align:center;
+}
 
-  .status-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.4);
-    animation: pulse 1.8s ease-in-out infinite;
-  }
+/* coord lines — thin crosshair centered */
+.crosshair-h,.crosshair-v{
+  position:absolute;pointer-events:none;
+  background:rgba(255,255,255,0.04);
+}
+.crosshair-h{left:0;right:0;height:1px;top:50%;}
+.crosshair-v{top:0;bottom:0;width:1px;left:50%;}
 
-  /* MAIN */
-  main {
-    flex: 1;
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 80px 48px;
-    text-align: center;
-  }
+/* corner brackets */
+.bracket{
+  position:absolute;width:20px;height:20px;pointer-events:none;
+}
+.bracket.tl{top:24px;left:24px;border-top:1px solid var(--mid);border-left:1px solid var(--mid);}
+.bracket.tr{top:24px;right:24px;border-top:1px solid var(--mid);border-right:1px solid var(--mid);}
+.bracket.bl{bottom:24px;left:24px;border-bottom:1px solid var(--mid);border-left:1px solid var(--mid);}
+.bracket.br{bottom:24px;right:24px;border-bottom:1px solid var(--mid);border-right:1px solid var(--mid);}
 
-  .tag {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.22em;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    margin-bottom: 32px;
-    opacity: 0;
-    animation: fadeUp 0.6s ease 0.2s forwards;
-  }
+/* label above */
+.above-label{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.28em;color:var(--text);
+  text-transform:uppercase;margin-bottom:32px;
+  opacity:0;animation:fadeIn 0.6s ease 0.3s forwards;
+}
 
-  .tag::before, .tag::after {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 1px;
-    background: rgba(255,255,255,0.2);
-  }
+/* MEGA TITLE */
+.mega{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(80px,15vw,200px);
+  line-height:1;letter-spacing:-0.02em;
+  text-transform:uppercase;
+  color:#fff;
+  position:relative;
+  opacity:0;animation:fadeIn 0.5s ease 0.5s forwards;
+}
 
-  .hero-title {
-    font-family: var(--display);
-    font-weight: 800;
-    font-size: clamp(64px, 10vw, 128px);
-    line-height: 1;
-    text-transform: uppercase;
-    letter-spacing: -0.02em;
-    color: #ffffff;
-    opacity: 0;
-    animation: fadeUp 0.7s ease 0.35s forwards;
-  }
+/* glitch */
+.mega::before,.mega::after{
+  content:attr(data-text);
+  position:absolute;inset:0;
+  font-family:inherit;font-weight:inherit;
+  font-size:inherit;line-height:inherit;
+  letter-spacing:inherit;text-transform:inherit;
+  overflow:hidden;
+}
+.mega::before{
+  color:rgba(255,255,255,0.4);
+  clip-path:polygon(0 20%,100% 20%,100% 40%,0 40%);
+  animation:glitch1 6s infinite;
+  left:2px;
+}
+.mega::after{
+  color:rgba(255,255,255,0.15);
+  clip-path:polygon(0 60%,100% 60%,100% 75%,0 75%);
+  animation:glitch2 7s infinite;
+  left:-2px;
+}
 
-  .hero-title .dim { color: rgba(255,255,255,0.15); }
+/* sub line */
+.sub-row{
+  display:flex;align-items:center;gap:20px;
+  margin-top:28px;justify-content:center;
+  opacity:0;animation:fadeIn 0.6s ease 0.7s forwards;
+}
+.sub-line{width:48px;height:1px;background:rgba(255,255,255,0.15);}
+.sub-text{
+  font-family:var(--mono);font-size:11px;
+  letter-spacing:0.22em;color:rgba(255,255,255,0.3);
+  text-transform:uppercase;
+}
 
-  .hero-sub {
-    font-family: var(--display);
-    font-weight: 600;
-    font-size: clamp(18px, 2.5vw, 28px);
-    text-transform: uppercase;
-    letter-spacing: 0.22em;
-    color: rgba(255,255,255,0.35);
-    margin-top: 20px;
-    opacity: 0;
-    animation: fadeUp 0.6s ease 0.5s forwards;
-  }
+/* contact pill */
+.contact-wrap{
+  margin-top:52px;
+  opacity:0;animation:fadeIn 0.6s ease 0.9s forwards;
+}
+.contact-link{
+  font-family:var(--mono);font-size:12px;
+  letter-spacing:0.14em;color:rgba(255,255,255,0.35);
+  text-decoration:none;
+  border:1px solid rgba(255,255,255,0.1);
+  padding:12px 28px;
+  display:inline-block;
+  transition:color 0.25s,border-color 0.25s;
+  text-transform:lowercase;
+}
+.contact-link:hover{color:#fff;border-color:rgba(255,255,255,0.4);}
 
-  /* STATUS STRIP */
-  .status-strip {
-    margin-top: 80px;
-    display: flex;
-    gap: 2px;
-    justify-content: center;
-    flex-wrap: wrap;
-    opacity: 0;
-    animation: fadeUp 0.6s ease 0.65s forwards;
-  }
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 
-  .status-item {
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
-    padding: 12px 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    min-width: 140px;
-  }
+@keyframes glitch1{
+  0%,94%,100%{transform:translate(0);opacity:0;}
+  95%{transform:translate(-3px,1px);opacity:1;}
+  97%{transform:translate(3px,-1px);opacity:1;}
+  99%{transform:translate(-1px,0);opacity:0.5;}
+}
+@keyframes glitch2{
+  0%,91%,100%{transform:translate(0);opacity:0;}
+  92%{transform:translate(3px,2px);opacity:1;}
+  94%{transform:translate(-3px,-1px);opacity:1;}
+  96%{transform:translate(1px,0);opacity:0.4;}
+}
 
-  .status-item-label {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-  }
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.1;}}
 
-  .status-item-val {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: rgba(255,255,255,0.6);
-    letter-spacing: 0.08em;
-  }
-
-  /* FOOTER */
-  footer {
-    position: relative;
-    z-index: 1;
-    border-top: 1px solid var(--border);
-    padding: 20px 48px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-dim);
-    letter-spacing: 0.1em;
-  }
-
-  footer a {
-    color: var(--text-dim);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  footer a:hover { color: #fff; }
-
-  .footer-right { display: flex; gap: 28px; }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.2; }
-  }
-
-  /* corner decoration */
-  .corner-deco {
-    position: fixed;
-    width: 80px; height: 80px;
-    pointer-events: none;
-    z-index: 5;
-  }
-
-  .corner-deco.tl { top: 80px; left: 24px; border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
-  .corner-deco.tr { top: 80px; right: 24px; border-top: 1px solid var(--border); border-right: 1px solid var(--border); }
-  .corner-deco.bl { bottom: 60px; left: 24px; border-bottom: 1px solid var(--border); border-left: 1px solid var(--border); }
-  .corner-deco.br { bottom: 60px; right: 24px; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); }
-
-  /* RESPONSIVE */
-  @media (max-width: 640px) {
-    nav { padding: 0 20px; }
-    main { padding: 60px 24px; }
-    footer { padding: 16px 20px; flex-direction: column; gap: 12px; text-align: center; }
-    .footer-right { gap: 16px; }
-    .cd-block { min-width: 70px; padding: 14px 16px; }
-    .cd-num { font-size: 36px; }
-    .cd-sep { font-size: 32px; }
-    .corner-deco { display: none; }
-    .notify-row { flex-direction: column; }
-    .notify-input { border-right: 1px solid var(--border); border-bottom: none; }
-    .status-strip { gap: 2px; }
-    .status-item { min-width: 120px; }
-  }
+/* RESPONSIVE */
+@media(max-width:600px){
+  .topbar{padding:0 20px;}
+  .mega{font-size:clamp(64px,20vw,100px);}
+  .contact-link{font-size:10px;padding:10px 20px;letter-spacing:0.1em;}
+  .bracket{width:14px;height:14px;}
+  .sub-text{font-size:9px;letter-spacing:0.16em;}
+}
 </style>
 </head>
 <body>
 
-<div class="grid-bg"></div>
-
-<!-- corner decorations -->
-<div class="corner-deco tl"></div>
-<div class="corner-deco tr"></div>
-<div class="corner-deco bl"></div>
-<div class="corner-deco br"></div>
-
-<!-- NAV -->
-<nav>
-  <a class="nav-brand" href="#">
-    <div class="nav-brand-text">
-      <span class="nav-brand-name">Vikasana Systems</span>
-      <span class="nav-brand-sub"></span>
-    </div>
-  </a>
-  <div class="nav-status">
-    <div class="status-dot"></div>
-    System Standby
-  </div>
-</nav>
+<!-- TOP -->
+<div class="topbar">
+  <a class="brand" href="#">Vikasana Systems</a>
+  <div class="top-right"><div class="dot"></div>System Standby</div>
+</div>
 
 <!-- MAIN -->
 <main>
+  <div class="crosshair-h"></div>
+  <div class="crosshair-v"></div>
+  <div class="bracket tl"></div>
+  <div class="bracket tr"></div>
+  <div class="bracket bl"></div>
+  <div class="bracket br"></div>
 
-  <div class="tag">Vikasana Systems</div>
+  <div class="above-label">Vikasana Systems </div>
 
-  <h1 class="hero-title">
-    Something <span class="dim">New Is</span> Coming.
-  </h1>
+  <div class="mega" data-text="Coming Soon">Coming Soon</div>
 
-  <div class="hero-sub">Preparing for Deployment</div>
-
-  <!-- CONTACT -->
-  <div class="status-strip">
-    <div class="status-item">
-      <div class="status-item-label">Contact</div>
-      <div class="status-item-val">
-        <a href="mailto:info@vikasanasystems.tech" style="color: inherit; text-decoration: none; transition: color 0.2s;"
-           onmouseover="this.style.color='#fff'" onmouseout="this.style.color=''">
-          info@vikasanasystems.tech
-        </a>
-      </div>
-    </div>
+  <div class="sub-row">
+    <div class="sub-line"></div>
+    <div class="sub-text">Preparing for Deployment</div>
+    <div class="sub-line"></div>
   </div>
 
+  <div class="contact-wrap">
+    <a class="contact-link" href="mailto:info@vikasanasystems.tech">info@vikasanasystems.tech</a>
+  </div>
 </main>
 
-<!-- FOOTER -->
-<footer>
-  <span>© 2025 Vikasana Systems · All rights reserved</span>
-  <div class="footer-right">
-    <a href="mailto:info@vikasanasystems.tech">Contact</a>
-    <a href="#">Drishtikon GCS</a>
-    <a href="#">About</a>
-  </div>
-</footer>
 
-<script>
-</script>
+
 </body>
 </html>
